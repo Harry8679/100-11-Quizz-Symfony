@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz Symfony{% endblock %}
+
+{% block body %}
+
+<div class="text-center">
+
+    <p class="text-6xl mb-6">🧠</p>
+
+    <h1 class="text-4xl font-extrabold text-white mb-3">Quiz Symfony</h1>
+    <p class="text-gray-400 mb-2">{{ total }} questions · Choix multiples</p>
+    <p class="text-gray-500 text-sm mb-10">
+        Teste tes connaissances en développement web
+    </p>
+
+    <a href="{{ path('app_quiz_start') }}"
+       class="inline-block bg-white text-gray-900 text-lg font-bold px-10 py-4 rounded-2xl hover:bg-gray-100 transition-colors">
+        Démarrer le quiz →
+    </a>
+
+</div>
+
+{% endblock %}

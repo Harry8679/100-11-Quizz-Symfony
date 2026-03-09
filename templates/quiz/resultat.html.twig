@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats du quiz{% endblock %}
+
+{% block body %}
+
+{# ── Score global ─────────────────────────────────────────────────────── #}
+<div class="text-center mb-10">
+
+    <p class="text-5xl font-extrabold text-white mb-2">
+        {{ score }} / {{ total }}
+    </p>
+    <p class="text-gray-400 text-lg mb-1">{{ pourcentage }}% de bonnes réponses</p>
+    <p class="text-2xl mt-4">{{ message }}</p>
+
+    {# Barre de score colorée selon le pourcentage #}
+    <div class="w-full bg-gray-800 rounded-full h-3 mt-6">
+        <div class="h-3 rounded-full transition-all duration-700
+                    {{ pourcentage >= 60 ? 'bg-green-500' : 'bg-red-500' }}"
+             style="width: {{ pourcentage }}%">
+        </div>
+    </div>
+
+</div>
+
+{# ── Détail de chaque réponse ─────────────────────────────────────────── #}
+<div class="flex flex-col gap-3 mb-8">
+    <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-1">
+        Détail des réponses
+    </h2>
+
+    {# reponses est le tableau sauvegardé en session à chaque question #}
+    {% for reponse in reponses %}
+
+        <div class="bg-gray-900 border rounded-xl px-5 py-4
+                    {{ reponse.estCorrecte ? 'border-green-700' : 'border-red-800' }}">
+
+            <p class="text-sm font-semibold text-gray-300 mb-2">
+                {{ loop.index }}. {{ reponse.question }}
+            </p>
+
+            <div class="flex flex-col gap-1 text-xs">
+
+                {# Réponse de l'utilisateur #}
+                <div class="flex items-center gap-2">
+                    <span class="{{ reponse.estCorrecte ? 'text-green-400' : 'text-red-400' }}">
+                        {{ reponse.estCorrecte ? '✅' : '❌' }}
+                    </span>
+                    <span class="text-gray-300">
+                        Ta réponse : <strong>{{ reponse.reponseUtilisateur }}</strong>
+                    </span>
+                </div>
+
+                {# Afficher la bonne réponse seulement si faux #}
+                {% if not reponse.estCorrecte %}
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-400">💡</span>
+                        <span class="text-green-400">
+                            Bonne réponse : <strong>{{ reponse.bonneReponse }}</strong>
+                        </span>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
+
+{# ── Actions ──────────────────────────────────────────────────────────── #}
+<div class="flex gap-3">
+    <a href="{{ path('app_quiz_start') }}"
+       class="flex-1 text-center bg-white text-gray-900 font-bold py-4 rounded-xl
+              hover:bg-gray-100 transition-colors text-sm">
+        🔄 Recommencer
+    </a>
+    <a href="{{ path('app_quiz_index') }}"
+       class="flex-1 text-center border border-gray-700 text-gray-400 py-4 rounded-xl
+              hover:bg-gray-800 transition-colors text-sm">
+        Accueil
+    </a>
+</div>
+
+{% endblock %}
